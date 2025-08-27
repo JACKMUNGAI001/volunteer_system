@@ -1,7 +1,8 @@
 from sqlalchemy.orm import sessionmaker
-from model import engine, Event, Volunteer
+from model import engine, Event, Volunteer, Assignment
 from datetime import datetime
 import re
+from typing import List, Optional
 
 Session = sessionmaker(bind=engine)
 
@@ -22,7 +23,7 @@ def create_event(name: str, date: str, location: str, required_skills: str) -> E
     finally:
         session.close()
 
-def get_all_events():
+def get_all_events() -> List[Event]:
     session = Session()
     try:
         events = session.query(Event).all()
@@ -30,7 +31,7 @@ def get_all_events():
     finally:
         session.close()
 
-def get_event_by_id(event_id: int):
+def get_event_by_id(event_id: int) -> Optional[Event]:
     session = Session()
     try:
         event = session.query(Event).filter_by(id=event_id).first()
@@ -53,7 +54,7 @@ def create_volunteer(name: str, email: str, phone: str, skills: str) -> Voluntee
     finally:
         session.close()
 
-def get_all_volunteers():
+def get_all_volunteers() -> List[Volunteer]:
     session = Session()
     try:
         volunteers = session.query(Volunteer).all()
@@ -61,10 +62,35 @@ def get_all_volunteers():
     finally:
         session.close()
 
-def get_volunteer_by_id(volunteer_id: int):
+def get_volunteer_by_id(volunteer_id: int) -> Optional[Volunteer]:
     session = Session()
     try:
         volunteer = session.query(Volunteer).filter_by(id=volunteer_id).first()
         return volunteer
+    finally:
+        session.close()
+
+def create_assignment(event_id: int, volunteer_id: int, assignment_date: str) -> Assignment:
+    session = Session()
+    try:
+        assignment_date_obj = datetime.strptime(assignment_date, '%Y-%m-%d').date()
+        assignment = Assignment(event_id=event_id, volunteer_id=volunteer_id, assignment_date=assignment_date_obj)
+        session.add(assignment)
+        session.commit()
+        return assignment
+    except ValueError:
+        session.rollback()
+        raise ValueError("Invalid date format. Use YYYY-MM-DD.")
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+def get_assignments_by_event(event_id: int) -> List[Assignment]:
+    session = Session()
+    try:
+        assignments = session.query(Assignment).filter_by(event_id=event_id).all()
+        return assignments
     finally:
         session.close()
