@@ -4,14 +4,14 @@ from crud import create_event, get_all_events, create_volunteer, get_all_volunte
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
     click.secho("Please select an option:", fg='blue')
-    click.secho("1. Add Event", fg='cyan')
-    click.secho("2. List Events", fg='cyan')
-    click.secho("3. Add Volunteer", fg='cyan')
-    click.secho("4. List Volunteers", fg='cyan')
-    click.secho("5. Assign Volunteer", fg='cyan')
-    click.secho("6. List Assignments", fg='cyan')
-    click.secho("7. Event Report", fg='cyan')
-    click.secho("8. Exit", fg='cyan')
+    click.secho("1. Add Event", fg='yellow')
+    click.secho("2. List Events", fg='yellow')
+    click.secho("3. Add Volunteer", fg='yellow')
+    click.secho("4. List Volunteers", fg='yellow')
+    click.secho("5. Assign Volunteer", fg='yellow')
+    click.secho("6. List Assignments", fg='yellow')
+    click.secho("7. Event Report", fg='yellow')
+    click.secho("8. Exit", fg='yellow')
     choice = click.prompt("Enter your choice (1-8)", type=int)
     return choice
 
@@ -114,6 +114,29 @@ def list_assignments():
     for a in assignments:
         click.echo(f"{a.id:<15} {a.volunteer.name:<20} {str(a.assignment_date):<12} {a.status:<10}")
 
+@cli.command()
+def event_report():
+    click.secho("Generating event report...", fg='blue')
+    event_id = click.prompt("Event ID", type=int)
+    event = get_event_by_id(event_id)
+    if not event:
+        click.secho(f"Error: Event with ID {event_id} not found.", fg='red')
+        return
+    assignments = get_assignments_by_event(event_id)
+    click.secho(f"\nEvent Report: {event.name}", fg='blue')
+    click.secho(f"Date: {event.date}", fg='cyan')
+    click.secho(f"Location: {event.location}", fg='cyan')
+    click.secho(f"Required Skills: {event.required_skills or 'None'}", fg='cyan')
+    click.secho(f"Total Volunteers: {len(assignments)}", fg='cyan')
+    if not assignments:
+        click.secho("No volunteers assigned.", fg='yellow')
+        return
+    header = f"{'Volunteer Name':<20} {'Email':<30} {'Status':<10}"
+    click.echo(header)
+    click.echo("-" * len(header))
+    for a in assignments:
+        click.echo(f"{a.volunteer.name:<20} {a.volunteer.email:<30} {a.status:<10}")
+
 def main():
     while True:
         choice = display_menu()
@@ -129,6 +152,8 @@ def main():
             cli(['assign-volunteer'])
         elif choice == 6:
             cli(['list-assignments'])
+        elif choice == 7:
+            cli(['event-report'])
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
