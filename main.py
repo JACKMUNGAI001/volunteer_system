@@ -1,17 +1,17 @@
 import click
-from crud import create_event
+from crud import create_event, get_all_events
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
     click.secho("Please select an option:", fg='blue')
-    click.secho("1. Add Event", fg='yellow')
-    click.secho("2. List Events", fg='yellow')
-    click.secho("3. Add Volunteer", fg='yellow')
-    click.secho("4. List Volunteers", fg='yellow')
-    click.secho("5. Assign Volunteer", fg='yellow')
-    click.secho("6. List Assignments", fg='yellow')
-    click.secho("7. Event Report", fg='yellow')
-    click.secho("8. Exit", fg='yellow')
+    click.secho("1. Add Event", fg='cyan')
+    click.secho("2. List Events", fg='cyan')
+    click.secho("3. Add Volunteer", fg='cyan')
+    click.secho("4. List Volunteers", fg='cyan')
+    click.secho("5. Assign Volunteer", fg='cyan')
+    click.secho("6. List Assignments", fg='cyan')
+    click.secho("7. Event Report", fg='cyan')
+    click.secho("8. Exit", fg='cyan')
     choice = click.prompt("Enter your choice (1-8)", type=int)
     return choice
 
@@ -35,11 +35,26 @@ def add_event():
     except Exception as e:
         click.secho(f"Error adding event: {e}", fg='red')
 
+@cli.command()
+def list_events():
+    click.secho("Listing all events...", fg='blue')
+    events = get_all_events()
+    if not events:
+        click.secho("No events found.", fg='yellow')
+        return
+    header = f"{'ID':<5} {'Name':<20} {'Date':<12} {'Location':<15} {'Skills':<20}"
+    click.echo(header)
+    click.echo("-" * len(header))
+    for e in events:
+        click.echo(f"{e.id:<5} {e.name:<20} {str(e.date):<12} {e.location:<15} {e.required_skills or '':<20}")
+
 def main():
     while True:
         choice = display_menu()
         if choice == 1:
             cli(['add-event'])
+        elif choice == 2:
+            cli(['list-events'])
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
