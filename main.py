@@ -1,5 +1,5 @@
 import click
-from crud import create_event, get_all_events, create_volunteer, get_all_volunteers
+from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -74,6 +74,28 @@ def list_volunteers():
     for v in volunteers:
         click.echo(f"{v.id:<5} {v.name:<20} {v.email:<30} {v.phone or '':<15} {v.skills or '':<20}")
 
+@cli.command()
+def assign_volunteer():
+    click.secho("Assigning a volunteer to an event...", fg='blue')
+    event_id = click.prompt("Event ID", type=int)
+    volunteer_id = click.prompt("Volunteer ID", type=int)
+    date = click.prompt("Assignment date (YYYY-MM-DD)")
+    try:
+        event = get_event_by_id(event_id)
+        volunteer = get_volunteer_by_id(volunteer_id)
+        if not event:
+            click.secho(f"Error: Event with ID {event_id} not found.", fg='red')
+            return
+        if not volunteer:
+            click.secho(f"Error: Volunteer with ID {volunteer_id} not found.", fg='red')
+            return
+        assignment = create_assignment(event_id, volunteer_id, date)
+        click.secho(f"Volunteer {volunteer.name} assigned to event {event.name} on {assignment.assignment_date}.", fg='green')
+    except ValueError as e:
+        click.secho(f"Error: {e}", fg='red')
+    except Exception as e:
+        click.secho(f"Error assigning volunteer: {e}", fg='red')
+
 def main():
     while True:
         choice = display_menu()
@@ -85,6 +107,8 @@ def main():
             cli(['add-volunteer'])
         elif choice == 4:
             cli(['list-volunteers'])
+        elif choice == 5:
+            cli(['assign-volunteer'])
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
