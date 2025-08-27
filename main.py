@@ -1,5 +1,5 @@
 import click
-from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id
+from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id, get_assignments_by_event
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -96,6 +96,24 @@ def assign_volunteer():
     except Exception as e:
         click.secho(f"Error assigning volunteer: {e}", fg='red')
 
+@cli.command()
+def list_assignments():
+    click.secho("Listing assignments for an event...", fg='blue')
+    event_id = click.prompt("Event ID", type=int)
+    event = get_event_by_id(event_id)
+    if not event:
+        click.secho(f"Error: Event with ID {event_id} not found.", fg='red')
+        return
+    assignments = get_assignments_by_event(event_id)
+    if not assignments:
+        click.secho("No assignments found for this event.", fg='yellow')
+        return
+    header = f"{'Assignment ID':<15} {'Volunteer':<20} {'Date':<12} {'Status':<10}"
+    click.echo(header)
+    click.echo("-" * len(header))
+    for a in assignments:
+        click.echo(f"{a.id:<15} {a.volunteer.name:<20} {str(a.assignment_date):<12} {a.status:<10}")
+
 def main():
     while True:
         choice = display_menu()
@@ -109,6 +127,8 @@ def main():
             cli(['list-volunteers'])
         elif choice == 5:
             cli(['assign-volunteer'])
+        elif choice == 6:
+            cli(['list-assignments'])
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
