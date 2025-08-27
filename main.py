@@ -1,4 +1,5 @@
 import click
+from crud import create_event
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -19,10 +20,27 @@ def cli():
     """Volunteer Coordination System CLI"""
     pass
 
+@cli.command()
+def add_event():
+    click.secho("Adding a new event...", fg='blue')
+    name = click.prompt("Event name")
+    date = click.prompt("Date (YYYY-MM-DD)")
+    location = click.prompt("Location")
+    skills = click.prompt("Required skills (comma-separated)")
+    try:
+        event = create_event(name, date, location, skills)
+        click.secho(f"Event '{event.name}' added successfully with ID {event.id}.", fg='green')
+    except ValueError as e:
+        click.secho(f"Error: {e}", fg='red')
+    except Exception as e:
+        click.secho(f"Error adding event: {e}", fg='red')
+
 def main():
     while True:
         choice = display_menu()
-        if choice == 8:
+        if choice == 1:
+            cli(['add-event'])
+        elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
         else:
