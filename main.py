@@ -1,5 +1,5 @@
 import click
-from crud import create_event, get_all_events
+from crud import create_event, get_all_events, create_volunteer
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -48,6 +48,19 @@ def list_events():
     for e in events:
         click.echo(f"{e.id:<5} {e.name:<20} {str(e.date):<12} {e.location:<15} {e.required_skills or '':<20}")
 
+@cli.command()
+def add_volunteer():
+    click.secho("Adding a new volunteer...", fg='blue')
+    name = click.prompt("Volunteer name")
+    email = click.prompt("Email")
+    phone = click.prompt("Phone")
+    skills = click.prompt("Skills (comma-separated)")
+    try:
+        volunteer = create_volunteer(name, email, phone, skills)
+        click.secho(f"Volunteer '{volunteer.name}' added successfully with ID {volunteer.id}.", fg='green')
+    except Exception as e:
+        click.secho(f"Error adding volunteer: {e}", fg='red')
+
 def main():
     while True:
         choice = display_menu()
@@ -55,6 +68,8 @@ def main():
             cli(['add-event'])
         elif choice == 2:
             cli(['list-events'])
+        elif choice == 3:
+            cli(['add-volunteer'])
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
