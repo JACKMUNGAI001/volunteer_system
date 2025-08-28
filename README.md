@@ -1,4 +1,4 @@
-# Volunteer Coordination System
+# Volunteer System
 
 ### A Python CLI application for managing nonprofit events, volunteers, and assignments using SQLAlchemy, SQLite, and Alembic migrations.
 
@@ -6,7 +6,7 @@
 
 ## Project Description
 
-The Volunteer Coordination System is a command-line interface (CLI) application designed to streamline event and volunteer management for nonprofit organizations. Built with Python, SQLAlchemy, SQLite, and Click, it allows users to create, list, assign, delete, and report on events and volunteers. The system supports tracking event details (name, date, location, required skills, and description) and volunteer information (name, email, phone, skills), with assignments linking volunteers to events. 
+The Volunteer System is a command-line interface (CLI) application designed to streamline event and volunteer management for nonprofit organizations. Built with Python, SQLAlchemy, SQLite, and Click, it allows users to create, list, assign, delete, and report on events and volunteers. The system supports tracking event details (name, date, location, required skills, and description) and volunteer information (name, email, phone, skills), with assignments linking volunteers to events. 
 
 ## Key features
 
@@ -31,8 +31,8 @@ The CLI uses colored output (`yellow` for menu options, `blue` for headers, `gre
 
 1. **Clone the Repository**:
    ```bash
-   git clone git@github.com:JACKMUNGAI001/volunteer_coordination_system.git
-   cd volunteer_coordination_system
+   git clone git@github.com:JACKMUNGAI001/volunteer_system.git
+   cd volunteer_system
 
 2. **Install Dependencies**:
    ```bash
