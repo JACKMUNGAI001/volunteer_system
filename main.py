@@ -1,5 +1,5 @@
 import click
-from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id, get_assignments_by_event
+from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id, get_assignments_by_event, delete_event, delete_volunteer
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -12,7 +12,9 @@ def display_menu():
     click.secho("6. List Assignments", fg='yellow')
     click.secho("7. Event Report", fg='yellow')
     click.secho("8. Exit", fg='yellow')
-    choice = click.prompt("Enter your choice (1-8)", type=int)
+    click.secho("9. Delete Event", fg='yellow')
+    click.secho("10. Delete Volunteer", fg='yellow')
+    choice = click.prompt("Enter your choice (1-10)", type=int)
     return choice
 
 @click.group()
@@ -137,6 +139,30 @@ def event_report():
     for a in assignments:
         click.echo(f"{a.volunteer.name:<20} {a.volunteer.email:<30} {a.status:<10}")
 
+@cli.command()
+def delete_event():
+    click.secho("Deleting an event...", fg='blue')
+    event_id = click.prompt("Event ID", type=int)
+    try:
+        delete_event(event_id)
+        click.secho(f"Event with ID {event_id} deleted successfully.", fg='green')
+    except ValueError as e:
+        click.secho(f"Error: {e}", fg='red')
+    except Exception as e:
+        click.secho(f"Error deleting event: {e}", fg='red')
+
+@cli.command()
+def delete_volunteer():
+    click.secho("Deleting a volunteer...", fg='blue')
+    volunteer_id = click.prompt("Volunteer ID", type=int)
+    try:
+        delete_volunteer(volunteer_id)
+        click.secho(f"Volunteer with ID {volunteer_id} deleted successfully.", fg='green')
+    except ValueError as e:
+        click.secho(f"Error: {e}", fg='red')
+    except Exception as e:
+        click.secho(f"Error deleting volunteer: {e}", fg='red')
+
 def main():
     while True:
         choice = display_menu()
@@ -157,8 +183,12 @@ def main():
         elif choice == 8:
             click.secho("Exiting Volunteer Coordination System. Goodbye!", fg='blue')
             break
+        elif choice == 9:
+            cli(['delete-event'])
+        elif choice == 10:
+            cli(['delete-volunteer'])
         else:
-            click.secho("Invalid choice. Please select a number between 1 and 8.", fg='red')
+            click.secho("Invalid choice. Please select a number between 1 and 10.", fg='red')
 
 if __name__ == '__main__':
     main()
