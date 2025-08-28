@@ -4,7 +4,7 @@ from datetime import datetime
 import re
 from typing import List, Optional
 
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine, expire_on_commit=False)
 
 def create_event(name: str, date: str, location: str, required_skills: str) -> Event:
     session = Session()
