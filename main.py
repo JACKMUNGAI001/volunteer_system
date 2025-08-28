@@ -1,5 +1,16 @@
 import click
-from crud import create_event, get_all_events, create_volunteer, get_all_volunteers, create_assignment, get_event_by_id, get_volunteer_by_id, get_assignments_by_event, delete_event, delete_volunteer
+from crud import (
+    create_event,
+    get_all_events,
+    create_volunteer,
+    get_all_volunteers,
+    create_assignment,
+    get_event_by_id,
+    get_volunteer_by_id,
+    get_assignments_by_event,
+    delete_event as crud_delete_event,
+    delete_volunteer as crud_delete_volunteer
+)
 
 def display_menu():
     click.secho("Welcome to the Volunteer Coordination System!", fg='blue')
@@ -139,24 +150,24 @@ def event_report():
     for a in assignments:
         click.echo(f"{a.volunteer.name:<20} {a.volunteer.email:<30} {a.status:<10}")
 
-@cli.command()
-def delete_event():
+@cli.command(name="delete-event")
+def cli_delete_event():
     click.secho("Deleting an event...", fg='blue')
     event_id = click.prompt("Event ID", type=int)
     try:
-        delete_event(event_id)
+        crud_delete_event(event_id)
         click.secho(f"Event with ID {event_id} deleted successfully.", fg='green')
     except ValueError as e:
         click.secho(f"Error: {e}", fg='red')
     except Exception as e:
         click.secho(f"Error deleting event: {e}", fg='red')
 
-@cli.command()
-def delete_volunteer():
+@cli.command(name="delete-volunteer")
+def cli_delete_volunteer():
     click.secho("Deleting a volunteer...", fg='blue')
     volunteer_id = click.prompt("Volunteer ID", type=int)
     try:
-        delete_volunteer(volunteer_id)
+        crud_delete_volunteer(volunteer_id)
         click.secho(f"Volunteer with ID {volunteer_id} deleted successfully.", fg='green')
     except ValueError as e:
         click.secho(f"Error: {e}", fg='red')

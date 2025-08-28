@@ -102,7 +102,8 @@ def delete_event(event_id: int) -> None:
         if not event:
             raise ValueError(f"Event with ID {event_id} not found.")
         
-        session.query(Assignment).filter_by(event_id=event_id).delete()
+        session.query(Assignment).filter_by(event_id=event_id).delete(synchronize_session=False)
+        
         session.delete(event)
         session.commit()
     except Exception as e:
@@ -117,8 +118,9 @@ def delete_volunteer(volunteer_id: int) -> None:
         volunteer = session.query(Volunteer).filter_by(id=volunteer_id).first()
         if not volunteer:
             raise ValueError(f"Volunteer with ID {volunteer_id} not found.")
-    
-        session.query(Assignment).filter_by(volunteer_id=volunteer_id).delete()
+        
+        session.query(Assignment).filter_by(volunteer_id=volunteer_id).delete(synchronize_session=False)
+        
         session.delete(volunteer)
         session.commit()
     except Exception as e:
