@@ -1,4 +1,4 @@
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, joinedload
 from model import engine, Event, Volunteer, Assignment
 from datetime import datetime
 import re
@@ -90,7 +90,7 @@ def create_assignment(event_id: int, volunteer_id: int, assignment_date: str) ->
 def get_assignments_by_event(event_id: int) -> List[Assignment]:
     session = Session()
     try:
-        assignments = session.query(Assignment).filter_by(event_id=event_id).all()
+        assignments = session.query(Assignment).filter_by(event_id=event_id).options(joinedload(Assignment.volunteer)).all()
         return assignments
     finally:
         session.close()
