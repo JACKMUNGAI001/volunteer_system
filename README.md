@@ -74,10 +74,10 @@ Run python main.py to launch the interactive menu. Select an option (1-10):
 10. Delete Volunteer: Remove a volunteer and their assignments by ID.
 
 ## Dependencies
-sqlalchemy: Database ORM.
-click: CLI interface with colored output.
-alembic: Database migrations.
-pipenv: Dependency management.
+- **sqlalchemy**: Database ORM.
+- **click**: CLI interface with colored output.
+- **alembic**: Database migrations.
+- **pipenv**: Dependency management.
 
 
 ## Contact Details
