@@ -36,15 +36,15 @@ The CLI uses colored output (`yellow` for menu options, `blue` for headers, `gre
 
 2. **Install Dependencies**:
    ```bash
-pipenv install
-pipenv shell
+   pipenv install
+   pipenv shell
 
 3. **Initialize Database**:
 Run main.py or apply migrations to create volunteer_system.db.
 
 4. **Initialize Alembic**:
    ```bash
-alembic init alembic
+   alembic init alembic
 
 In alembic.ini, set sqlalchemy.url = sqlite:///volunteer_system.db.
 In alembic/env.py, add:
@@ -53,12 +53,12 @@ target_metadata = Base.metadata
 
 5. **Apply Migrations**:
    ```bash
-alembic revision --autogenerate -m "Initial migration"
-alembic upgrade head
+   alembic revision --autogenerate -m "Initial migration"
+   alembic upgrade head
 
 6. **Run the CLI**:
    ```bash
-python main.py
+   python main.py
 
 ## Usage
 Run python main.py to launch the interactive menu. Select an option (1-10):
