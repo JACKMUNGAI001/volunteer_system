@@ -27,6 +27,12 @@ The CLI uses colored output (`yellow` for menu options, `blue` for headers, `gre
   - `main.py`: Implements the CLI using Click.
   - `alembic/`: Alembic migration scripts for schema management.
 
+ ## Prerequisites
+
+- Python 3.8.13
+- pipenv installed (`pip install pipenv`)
+ 
+
 ## Setup
 
 1. **Clone the Repository**:
@@ -61,7 +67,12 @@ target_metadata = Base.metadata
    python main.py
 
 ## Usage
-Run python main.py to launch the interactive menu. Select an option (1-10):
+
+-  ```bash
+   python main.py
+
+To launch the interactive menu. Select an option (1-10):
+Welcome to the Volunteer System!
 1. Add Event: Create an event with name, date, location, required skills, and description.
 2. List Events: Display all events in a table.
 3.Add Volunteer: Add a volunteer with name, email, phone, and skills.
@@ -74,11 +85,15 @@ Run python main.py to launch the interactive menu. Select an option (1-10):
 10. Delete Volunteer: Remove a volunteer and their assignments by ID.
 
 ## Dependencies
+
 - **sqlalchemy**: Database ORM.
 - **click**: CLI interface with colored output.
 - **alembic**: Database migrations.
 - **pipenv**: Dependency management.
 
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Contact Details
 
